@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>usuario.html — Manual de Usuario Explora Colombia</title>
   <style>
-    /* Reset simples */
     :root{
       --bg:#0f1724; --card:#0b1220; --accent:#0ea5a1; --muted:#94a3b8; --text:#e6eef6;
       --maxw:1000px;
@@ -14,32 +13,21 @@
     *{box-sizing:border-box}
     html,body{height:100%; margin:0; background:linear-gradient(180deg,#071025 0%, var(--bg) 60%); color:var(--text);}
     .wrap{max-width:var(--maxw); margin:32px auto; padding:28px;}
-
     header{display:flex;gap:20px;align-items:center}
     .logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,#06b6d4,#059669);display:flex;align-items:center;justify-content:center;font-weight:700}
     h1{font-size:22px;margin:0}
     p.lead{color:var(--muted);margin:6px 0 18px}
-
     nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
     nav.toc a{background:rgba(255,255,255,0.04);padding:8px 12px;border-radius:8px;color:var(--text);text-decoration:none;font-size:13px}
-
     .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12)); padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.6); margin-bottom:16px}
     h2{margin-top:0}
     .sub{color:var(--muted);font-size:14px}
-
-    /* Layout for two-column sections */
     .cols{display:grid;grid-template-columns:1fr 360px;gap:18px}
     @media (max-width:900px){.cols{grid-template-columns:1fr}}
-
     .example{background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;font-family:monospace;font-size:13px;color:#cfeff0}
-
-    /* Small UI samples */
     .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:#022; text-decoration:none;font-weight:600}
     .input{display:block;width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)}
-
     footer{color:var(--muted);font-size:13px;padding:12px 0;text-align:center}
-
-    /* Accordion */
     details{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin-top:8px}
     summary{cursor:pointer;font-weight:600}
   </style>
@@ -50,27 +38,97 @@
       <div class="logo">EC</div>
       <div>
         <h1>Manual de Usuario — Explora Colombia</h1>
-        <p class="lead">Guía detallada para usuarios: cómo usar la plataforma, funciones principales, flujos de trabajo y preguntas frecuentes.</p>
+        <p class="lead">Plataforma digital para promover el turismo, cultura y biodiversidad de Colombia. Aquí aprenderás a usar todas sus funciones.</p>
       </div>
     </header>
 
     <nav class="toc card" aria-label="Índice">
       <a href="#intro">Introducción</a>
-      <a href="#acceso">Acceso y cuentas</a>
-      <a href="#navegacion">Navegación</a>
-      <a href="#lugares">Páginas de lugares</a>
-      <a href="#favoritos">Favoritos y listas</a>
+      <a href="#acceso">Acceso</a>
+      <a href="#funciones">Funciones principales</a>
+      <a href="#publicar">Publicar contenido</a>
+      <a href="#listas">Favoritos y rutas</a>
       <a href="#mapa">Mapa interactivo</a>
-      <a href="#perfil">Perfil y contenidos</a>
+      <a href="#perfil">Perfil</a>
       <a href="#faq">FAQ</a>
-      <a href="#contacto">Soporte</a>
+      <a href="#soporte">Soporte</a>
     </nav>
 
     <main>
-      <!-- Contenido igual al manual anterior -->
-      <!-- ... -->
+      <section id="intro" class="card">
+        <h2>1. Introducción</h2>
+        <p>Explora Colombia es un proyecto creado para mostrar la riqueza cultural, natural y turística de Colombia. Su objetivo es brindar a los usuarios una herramienta práctica para planificar viajes, conocer lugares emblemáticos, y conectar con experiencias auténticas en diferentes regiones.</p>
+        <p>El manual de usuario tiene como fin explicar cómo navegar, registrarse, buscar destinos, guardar favoritos, crear rutas, y publicar experiencias en la plataforma.</p>
+      </section>
+
+      <section id="acceso" class="card">
+        <h2>2. Acceso</h2>
+        <p>Para ingresar a la plataforma tienes dos opciones:</p>
+        <ul>
+          <li><strong>Registrarse</strong>: creando una cuenta con nombre, correo y contraseña.</li>
+          <li><strong>Iniciar sesión</strong>: con tus credenciales registradas o mediante redes sociales.</li>
+        </ul>
+        <p>Es recomendable activar la verificación en dos pasos para mayor seguridad.</p>
+      </section>
+
+      <section id="funciones" class="card">
+        <h2>3. Funciones principales</h2>
+        <ul>
+          <li>Explorar lugares turísticos por categorías (cultural, ecológico, histórico, gastronómico).</li>
+          <li>Visualizar galerías de imágenes y reseñas de otros visitantes.</li>
+          <li>Buscar destinos por nombre, región o tipo de experiencia.</li>
+          <li>Filtrar resultados por precio, accesibilidad o nivel de dificultad.</li>
+        </ul>
+      </section>
+
+      <section id="publicar" class="card">
+        <h2>4. Publicar contenido</h2>
+        <p>Los usuarios pueden contribuir compartiendo experiencias:</p>
+        <ol>
+          <li>Ir a la sección <strong>Publicar</strong>.</li>
+          <li>Completar el formulario con título, descripción, ubicación, categoría y fotos.</li>
+          <li>Enviar la publicación para revisión. Una vez aprobada, estará visible para la comunidad.</li>
+        </ol>
+      </section>
+
+      <section id="listas" class="card">
+        <h2>5. Favoritos y rutas</h2>
+        <p>Puedes guardar lugares como <strong>Favoritos</strong> o crear listas personalizadas (ejemplo: “Rutas de montaña”). Además, es posible generar rutas seleccionando varios destinos y obtener un itinerario sugerido.</p>
+      </section>
+
+      <section id="mapa" class="card">
+        <h2>6. Mapa interactivo</h2>
+        <p>El mapa permite ubicar destinos, calcular distancias y planear recorridos. Puedes aplicar filtros para visualizar solo sitios culturales, parques naturales o experiencias gastronómicas.</p>
+      </section>
+
+      <section id="perfil" class="card">
+        <h2>7. Perfil de usuario</h2>
+        <p>En tu perfil puedes actualizar tu foto, biografía, listas y publicaciones. También acceder a tus rutas guardadas y reseñas creadas.</p>
+      </section>
+
+      <section id="faq" class="card">
+        <h2>8. Preguntas frecuentes</h2>
+        <details>
+          <summary>¿Puedo editar mis publicaciones?</summary>
+          <p>Sí, desde tu perfil en la sección publicaciones.</p>
+        </details>
+        <details>
+          <summary>¿Cómo reporto contenido incorrecto?</summary>
+          <p>En cada página de lugar existe un botón de “Reportar”.</p>
+        </details>
+        <details>
+          <summary>¿Puedo usar la plataforma sin internet?</summary>
+          <p>De momento no, aunque se pueden descargar itinerarios en PDF para consulta offline.</p>
+        </details>
+      </section>
+
+      <section id="soporte" class="card">
+        <h2>9. Soporte</h2>
+        <p>Si tienes problemas técnicos o dudas, comunícate a través del correo <strong>soporte@exploracolombia.com</strong> o usa el chat en línea disponible en la plataforma.</p>
+      </section>
+
       <footer>
-        <p>¿Necesitas que adapte este manual a formato PDF o Word (con normas APA)? Puedo generar la versión lista para imprimir.</p>
+        <p>Manual de Usuario — Explora Colombia | Actualizado: Octubre 2025</p>
       </footer>
     </main>
   </div>
