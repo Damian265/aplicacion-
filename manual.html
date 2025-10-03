@@ -3,175 +3,893 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>usuario.html — Manual de Usuario Explora Colombia</title>
+  <title>Manual de Usuario — Explora Colombia</title>
   <style>
     :root{
-      --bg:#0f1724; --card:#0b1220; --accent:#0ea5a1; --muted:#94a3b8; --text:#e6eef6;
-      --maxw:1200px;
-      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      --primary:#0ea5a1;
+      --secondary:#06b6d4;
+      --accent:#10b981;
+      --bg:#0a0e1a;
+      --card:#141824;
+      --card-hover:#1a1f2e;
+      --text:#e6eef6;
+      --muted:#94a3b8;
+      --border:rgba(255,255,255,0.1);
     }
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:linear-gradient(180deg,#071025 0%, var(--bg) 70%); color:var(--text);min-height:100vh;}
-    .wrap{max-width:var(--maxw); margin:0 auto; display:flex; gap:24px; padding:24px;}
-    header{display:flex;gap:16px;align-items:center;padding:20px;}
-    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,#06b6d4,#059669);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:#022}
-    h1{font-size:22px}
-    p.lead{color:var(--muted);margin:6px 0 0}
-    /* Sidebar */
-    nav{flex:0 0 250px;display:flex;flex-direction:column;gap:8px;background:rgba(255,255,255,0.04);padding:16px;border-radius:12px; height:fit-content}
-    nav button{background:none;border:none;padding:10px 12px;border-radius:8px;text-align:left;color:var(--text);font-size:14px;cursor:pointer;transition:.2s}
-    nav button:hover, nav button.active{background:var(--accent);color:#022;font-weight:600}
-    /* Content */
-    main{flex:1}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)); padding:22px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.6); margin-bottom:18px;display:none;animation:fade .4s ease}
-    .card.active{display:block}
-    h2{margin-bottom:10px}
-    ul,ol{margin-left:20px;margin-top:10px}
-    .example{background:rgba(255,255,255,0.05);padding:12px;border-radius:8px;font-family:monospace;font-size:13px;color:#cfeff0;margin-top:10px}
-    details{background:rgba(255,255,255,0.05);padding:10px;border-radius:8px;margin-top:8px}
-    summary{cursor:pointer;font-weight:600}
-    footer{color:var(--muted);font-size:13px;padding:12px;text-align:center;margin-top:20px}
-    @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    body{
+      background:radial-gradient(ellipse at top,#1a2332,#0a0e1a);
+      color:var(--text);
+      font-family:'Segoe UI',system-ui,sans-serif;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    
+    /* Hero Header */
+    .hero{
+      background:linear-gradient(135deg,rgba(14,165,161,0.2),rgba(6,182,212,0.1));
+      border-bottom:1px solid var(--border);
+      padding:40px 20px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::before{
+      content:'';
+      position:absolute;
+      top:-50%;
+      left:-50%;
+      width:200%;
+      height:200%;
+      background:radial-gradient(circle,rgba(14,165,161,0.1) 1px,transparent 1px);
+      background-size:50px 50px;
+      animation:drift 20s linear infinite;
+    }
+    @keyframes drift{
+      0%{transform:translate(0,0)}
+      100%{transform:translate(50px,50px)}
+    }
+    .logo-hero{
+      width:80px;
+      height:80px;
+      margin:0 auto 20px;
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      border-radius:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:32px;
+      font-weight:700;
+      color:#000;
+      box-shadow:0 10px 40px rgba(14,165,161,0.4);
+      position:relative;
+      animation:float 3s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-10px)}
+    }
+    h1{
+      font-size:clamp(24px,5vw,42px);
+      margin-bottom:12px;
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .hero p{
+      color:var(--muted);
+      font-size:clamp(14px,3vw,18px);
+      max-width:600px;
+      margin:0 auto;
+    }
+
+    /* Progress Bar */
+    .progress-container{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:var(--bg);
+      border-bottom:1px solid var(--border);
+    }
+    .progress-bar{
+      height:4px;
+      background:linear-gradient(90deg,var(--primary),var(--secondary));
+      width:0%;
+      transition:width 0.3s ease;
+    }
+
+    /* Main Layout */
+    .container{
+      max-width:1400px;
+      margin:0 auto;
+      padding:40px 20px;
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:30px;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar{
+      position:sticky;
+      top:70px;
+      height:fit-content;
+      background:var(--card);
+      border-radius:16px;
+      padding:20px;
+      border:1px solid var(--border);
+      box-shadow:0 8px 32px rgba(0,0,0,0.4);
+    }
+    .nav-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:14px 16px;
+      margin-bottom:8px;
+      border-radius:10px;
+      background:transparent;
+      border:none;
+      color:var(--muted);
+      font-size:15px;
+      cursor:pointer;
+      transition:all 0.3s ease;
+      width:100%;
+      text-align:left;
+    }
+    .nav-item:hover{
+      background:var(--card-hover);
+      color:var(--text);
+      transform:translateX(4px);
+    }
+    .nav-item.active{
+      background:linear-gradient(135deg,rgba(14,165,161,0.2),rgba(6,182,212,0.2));
+      color:var(--primary);
+      font-weight:600;
+      border-left:3px solid var(--primary);
+    }
+    .nav-icon{
+      font-size:20px;
+      min-width:24px;
+    }
+
+    /* Content Area */
+    .content{
+      min-height:600px;
+    }
+    .section{
+      background:var(--card);
+      border-radius:16px;
+      padding:40px;
+      border:1px solid var(--border);
+      box-shadow:0 8px 32px rgba(0,0,0,0.4);
+      display:none;
+      animation:slideIn 0.4s ease;
+    }
+    .section.active{
+      display:block;
+    }
+    @keyframes slideIn{
+      from{opacity:0;transform:translateY(20px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    
+    h2{
+      font-size:28px;
+      margin-bottom:20px;
+      color:var(--primary);
+    }
+    h3{
+      font-size:20px;
+      margin:24px 0 12px;
+      color:var(--secondary);
+    }
+    p{
+      line-height:1.8;
+      margin-bottom:16px;
+      color:var(--muted);
+    }
+    
+    /* Lists */
+    ul,ol{
+      margin:16px 0 16px 24px;
+      line-height:1.8;
+    }
+    li{
+      margin-bottom:10px;
+      color:var(--muted);
+    }
+    li strong{
+      color:var(--text);
+    }
+
+    /* Cards & Examples */
+    .example-box{
+      background:rgba(14,165,161,0.1);
+      border-left:4px solid var(--primary);
+      padding:20px;
+      border-radius:10px;
+      margin:20px 0;
+      font-family:'Courier New',monospace;
+      font-size:14px;
+      line-height:1.6;
+    }
+    .tip-box{
+      background:rgba(16,185,129,0.1);
+      border-left:4px solid var(--accent);
+      padding:20px;
+      border-radius:10px;
+      margin:20px 0;
+    }
+    .tip-box::before{
+      content:'💡 ';
+      font-size:20px;
+    }
+    .warning-box{
+      background:rgba(245,158,11,0.1);
+      border-left:4px solid #f59e0b;
+      padding:20px;
+      border-radius:10px;
+      margin:20px 0;
+    }
+    .warning-box::before{
+      content:'⚠️ ';
+      font-size:20px;
+    }
+
+    /* Interactive Elements */
+    .accordion{
+      background:var(--card-hover);
+      border-radius:10px;
+      margin:12px 0;
+      overflow:hidden;
+      border:1px solid var(--border);
+      transition:all 0.3s ease;
+    }
+    .accordion:hover{
+      border-color:var(--primary);
+    }
+    .accordion-header{
+      padding:18px 20px;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-weight:600;
+      color:var(--text);
+      user-select:none;
+    }
+    .accordion-icon{
+      transition:transform 0.3s ease;
+      color:var(--primary);
+    }
+    .accordion.open .accordion-icon{
+      transform:rotate(180deg);
+    }
+    .accordion-content{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      padding:0 20px;
+    }
+    .accordion.open .accordion-content{
+      max-height:500px;
+      padding:0 20px 20px;
+    }
+
+    /* Feature Cards */
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      margin:20px 0;
+    }
+    .feature-card{
+      background:var(--card-hover);
+      padding:24px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      transition:all 0.3s ease;
+      cursor:pointer;
+    }
+    .feature-card:hover{
+      transform:translateY(-5px);
+      border-color:var(--primary);
+      box-shadow:0 10px 30px rgba(14,165,161,0.3);
+    }
+    .feature-icon{
+      font-size:32px;
+      margin-bottom:12px;
+    }
+    .feature-title{
+      font-weight:600;
+      margin-bottom:8px;
+      color:var(--text);
+    }
+
+    /* Steps */
+    .steps{
+      counter-reset:step;
+    }
+    .step{
+      counter-increment:step;
+      position:relative;
+      padding-left:50px;
+      margin-bottom:24px;
+    }
+    .step::before{
+      content:counter(step);
+      position:absolute;
+      left:0;
+      top:0;
+      width:36px;
+      height:36px;
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#000;
+    }
+
+    /* Footer */
+    footer{
+      text-align:center;
+      padding:30px;
+      color:var(--muted);
+      font-size:14px;
+      margin-top:40px;
+      border-top:1px solid var(--border);
+    }
+
+    /* Responsive */
+    @media(max-width:768px){
+      .container{
+        grid-template-columns:1fr;
+      }
+      .sidebar{
+        position:static;
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:8px;
+      }
+      .nav-item{
+        font-size:13px;
+        padding:12px;
+      }
+      .section{
+        padding:24px;
+      }
+      .feature-grid{
+        grid-template-columns:1fr;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">EC</div>
-    <div>
-      <h1>Manual de Usuario — Explora Colombia</h1>
-      <p class="lead">Aprende paso a paso cómo usar la plataforma para descubrir y compartir lo mejor de Colombia.</p>
-    </div>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <header class="hero">
+    <div class="logo-hero">🇨🇴</div>
+    <h1>📖 Manual de Usuario — Explora Colombia</h1>
+    <p>La plataforma digital que conecta viajeros con los destinos más auténticos de Colombia</p>
   </header>
 
-  <div class="wrap">
-    <nav aria-label="Índice">
-      <button class="active" data-tab="intro">Introducción</button>
-      <button data-tab="acceso">Acceso</button>
-      <button data-tab="funciones">Funciones</button>
-      <button data-tab="publicar">Publicar</button>
-      <button data-tab="listas">Favoritos y rutas</button>
-      <button data-tab="mapa">Mapa</button>
-      <button data-tab="perfil">Perfil</button>
-      <button data-tab="faq">FAQ</button>
-      <button data-tab="soporte">Soporte</button>
-      <button data-tab="tips">Tips y recomendaciones</button>
+  <div class="container">
+    <nav class="sidebar" aria-label="Navegación">
+      <button class="nav-item active" data-section="intro">
+        <span class="nav-icon">🏠</span>
+        <span>Introducción</span>
+      </button>
+      <button class="nav-item" data-section="acceso">
+        <span class="nav-icon">🔐</span>
+        <span>Acceso</span>
+      </button>
+      <button class="nav-item" data-section="funciones">
+        <span class="nav-icon">⚙️</span>
+        <span>Funciones</span>
+      </button>
+      <button class="nav-item" data-section="publicar">
+        <span class="nav-icon">📝</span>
+        <span>Publicar</span>
+      </button>
+      <button class="nav-item" data-section="favoritos">
+        <span class="nav-icon">⭐</span>
+        <span>Favoritos</span>
+      </button>
+      <button class="nav-item" data-section="mapa">
+        <span class="nav-icon">🗺️</span>
+        <span>Mapa</span>
+      </button>
+      <button class="nav-item" data-section="perfil">
+        <span class="nav-icon">👤</span>
+        <span>Perfil</span>
+      </button>
+      <button class="nav-item" data-section="faq">
+        <span class="nav-icon">❓</span>
+        <span>FAQ</span>
+      </button>
+      <button class="nav-item" data-section="soporte">
+        <span class="nav-icon">💬</span>
+        <span>Soporte</span>
+      </button>
+      <button class="nav-item" data-section="tips">
+        <span class="nav-icon">💡</span>
+        <span>Tips</span>
+      </button>
+      <button class="nav-item" data-section="seguridad">
+        <span class="nav-icon">🔒</span>
+        <span>Seguridad</span>
+      </button>
     </nav>
 
-    <main>
-      <section id="intro" class="card active">
+    <main class="content">
+      <!-- INTRODUCCIÓN -->
+      <section id="intro" class="section active">
         <h2>1. Introducción</h2>
-        <p><strong>Explora Colombia</strong> es una plataforma digital diseñada para resaltar la diversidad cultural, turística y natural del país. Está pensada para viajeros, estudiantes, investigadores y cualquier persona que desee descubrir destinos únicos.</p>
-        <p>En este manual aprenderás a registrarte, navegar, guardar favoritos, crear rutas, usar el mapa interactivo y compartir tus experiencias.</p>
+        <p><strong>Explora Colombia</strong> es más que un sitio web: es un espacio interactivo que conecta viajeros con destinos auténticos. Aquí podrás:</p>
+        
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🏞️</div>
+            <div class="feature-title">Descubre Lugares</div>
+            <p>Encuentra destinos turísticos únicos en todo el país</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🍽️</div>
+            <div class="feature-title">Cultura y Gastronomía</div>
+            <p>Conoce la historia y tradiciones de cada región</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📋</div>
+            <div class="feature-title">Organiza Itinerarios</div>
+            <p>Crea tus propias rutas personalizadas</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✍️</div>
+            <div class="feature-title">Comparte Experiencias</div>
+            <p>Publica reseñas y ayuda a otros viajeros</p>
+          </div>
+        </div>
+
+        <h3>👉 Ejemplo Práctico</h3>
+        <div class="example-box">
+Imagina que planeas un viaje a San Agustín (Huila):
+
+1. Buscar "San Agustín" en el buscador
+2. Ver fotos y reseñas de otros viajeros
+3. Guardar el destino en Favoritos
+4. Crear una ruta incluyendo el "Desierto de la Tatacoa"
+
+✅ Resultado: Itinerario personalizado listo para tu aventura
+        </div>
       </section>
 
-      <section id="acceso" class="card">
-        <h2>2. Acceso</h2>
-        <p>Para ingresar tienes dos opciones:</p>
+      <!-- ACCESO -->
+      <section id="acceso" class="section">
+        <h2>2. Acceso a la Plataforma</h2>
+        
+        <h3>Opciones para Ingresar</h3>
+        
+        <div class="steps">
+          <div class="step">
+            <strong>Registro Manual</strong>
+            <ul>
+              <li>Ingresa tu nombre completo</li>
+              <li>Proporciona un correo electrónico válido</li>
+              <li>Crea una contraseña segura (mínimo 8 caracteres, con números y símbolos)</li>
+              <li>Acepta términos y condiciones</li>
+            </ul>
+          </div>
+          
+          <div class="step">
+            <strong>Inicio con Redes Sociales</strong>
+            <p>Ingresa con tu cuenta de Google o Facebook con un solo clic.</p>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <strong>Consejo de Seguridad:</strong> Activa la verificación en dos pasos. Así, aunque alguien conozca tu contraseña, necesitará un código adicional enviado a tu correo o celular.
+        </div>
+
+        <div class="example-box">
+👉 Ejemplo de mensaje de confirmación:
+
+"¡Bienvenido, Laura! Tu cuenta ha sido creada con éxito. 
+Verifica tu correo para activar tu perfil."
+        </div>
+      </section>
+
+      <!-- FUNCIONES -->
+      <section id="funciones" class="section">
+        <h2>3. Funciones Principales</h2>
+        <p>Explora Colombia cuenta con múltiples herramientas para mejorar tu experiencia:</p>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🔎</div>
+            <div class="feature-title">Buscador Inteligente</div>
+            <p>Encuentra destinos por nombre, ciudad o categoría</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🗂️</div>
+            <div class="feature-title">Categorías</div>
+            <p>Cultural, ecológico, histórico, gastronómico, aventura</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🖼️</div>
+            <div class="feature-title">Galería Multimedia</div>
+            <p>Fotos y videos de la comunidad</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⭐</div>
+            <div class="feature-title">Sistema de Reseñas</div>
+            <p>Califica lugares de 1 a 5 estrellas</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📥</div>
+            <div class="feature-title">Descarga PDF</div>
+            <p>Obtén itinerarios para usar sin conexión</p>
+          </div>
+        </div>
+
+        <h3>👉 Caso de Uso: Búsqueda de Cartagena</h3>
+        <div class="example-box">
+Si buscas "Cartagena", el sistema mostrará:
+
+📍 Castillo San Felipe
+🏝️ Islas del Rosario
+🏛️ Ciudad Amurallada
+
+Con filtros de:
+• Precio
+• Accesibilidad
+• Tipo de experiencia
+        </div>
+      </section>
+
+      <!-- PUBLICAR -->
+      <section id="publicar" class="section">
+        <h2>4. Publicar Contenido</h2>
+        <p>Compartir tus experiencias ayuda a otros viajeros a conocer mejor los destinos.</p>
+
+        <h3>Pasos para Publicar</h3>
+        <div class="steps">
+          <div class="step">
+            Ve a la sección <strong>Publicar</strong> en el menú principal
+          </div>
+          <div class="step">
+            Rellena el formulario:
+            <ul>
+              <li>📌 <strong>Título:</strong> "Mi visita a Villa de Leyva"</li>
+              <li>📝 <strong>Descripción:</strong> Detalla tu experiencia, horarios, recomendaciones</li>
+              <li>📍 <strong>Ubicación:</strong> Selecciona en el mapa el lugar exacto</li>
+              <li>🏷️ <strong>Categoría:</strong> Ejemplo: "Histórico"</li>
+              <li>📷 <strong>Fotos/Videos:</strong> Sube archivos desde tu dispositivo</li>
+            </ul>
+          </div>
+          <div class="step">
+            Haz clic en <strong>Enviar</strong>
+          </div>
+        </div>
+
+        <div class="warning-box">
+          <strong>Nota:</strong> Todas las publicaciones pasan por un proceso de moderación para evitar contenido inapropiado.
+        </div>
+      </section>
+
+      <!-- FAVORITOS -->
+      <section id="favoritos" class="section">
+        <h2>5. Favoritos y Creación de Rutas</h2>
+        <p>La plataforma te permite organizar mejor tus viajes:</p>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⭐</div>
+            <div class="feature-title">Favoritos</div>
+            <p>Guarda lugares que te interesen para visitarlos después</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📋</div>
+            <div class="feature-title">Listas Personalizadas</div>
+            <p>Crea colecciones como "Playas del Caribe"</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🗺️</div>
+            <div class="feature-title">Rutas Interactivas</div>
+            <p>Obtén itinerarios con tiempos y distancias</p>
+          </div>
+        </div>
+
+        <h3>👉 Ejemplo de Lista Creada</h3>
+        <div class="example-box">
+Lista: "Colombia Gastronómica"
+
+🥘 Arepas de Antioquia
+🍖 Bandeja paisa en Medellín
+🍲 Ajíaco en Bogotá
+🥣 Sancocho en el Valle del Cauca
+        </div>
+      </section>
+
+      <!-- MAPA -->
+      <section id="mapa" class="section">
+        <h2>6. Mapa Interactivo</h2>
+        <p>El mapa es una herramienta clave en Explora Colombia.</p>
+
+        <h3>¿Qué puedes hacer con el mapa?</h3>
         <ul>
-          <li><strong>Registrarse:</strong> Crea tu cuenta con nombre, correo y contraseña.</li>
-          <li><strong>Iniciar sesión:</strong> Ingresa con tus credenciales o mediante redes sociales (Google, Facebook).</li>
+          <li>📍 Ver destinos geolocalizados en todo el país</li>
+          <li>🔍 Aplicar filtros (playas, parques naturales, museos)</li>
+          <li>📏 Calcular distancias en kilómetros</li>
+          <li>⏱️ Ver tiempos estimados de viaje</li>
+          <li>🚗 Rutas con transporte público, carro o bicicleta</li>
         </ul>
-        <p><em>Consejo:</em> Activa la verificación en dos pasos para mayor seguridad.</p>
-        <div class="example">Ejemplo:  
-        Usuario: juanperez@mail.com  
-        Contraseña: ********</div>
+
+        <h3>👉 Ejemplo de Uso</h3>
+        <div class="example-box">
+Viaje: Bogotá → Villa de Leyva
+
+El mapa mostrará:
+• Ruta recomendada: 169 km
+• Tiempo estimado: 3h 15min
+• Parada sugerida: Zipaquirá (Catedral de Sal)
+• Opciones: Bus, carro particular, tour organizado
+        </div>
       </section>
 
-      <section id="funciones" class="card">
-        <h2>3. Funciones principales</h2>
+      <!-- PERFIL -->
+      <section id="perfil" class="section">
+        <h2>7. Perfil de Usuario</h2>
+        <p>Tu perfil es tu identidad dentro de la comunidad de viajeros.</p>
+
+        <h3>En tu perfil puedes:</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📸</div>
+            <div class="feature-title">Foto de Perfil</div>
+            <p>Personaliza tu imagen</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📝</div>
+            <div class="feature-title">Biografía</div>
+            <p>"Apasionado por la fotografía de paisajes"</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📂</div>
+            <div class="feature-title">Mis Listas</div>
+            <p>Revisa tus rutas guardadas</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✍️</div>
+            <div class="feature-title">Editar Contenido</div>
+            <p>Modifica tus publicaciones</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔔</div>
+            <div class="feature-title">Notificaciones</div>
+            <p>Recibe alertas sobre nuevos destinos</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq" class="section">
+        <h2>8. Preguntas Frecuentes (FAQ)</h2>
+
+        <div class="accordion">
+          <div class="accordion-header">
+            <span>¿Puedo editar mis publicaciones?</span>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>Sí, desde tu perfil en la sección <strong>Mis publicaciones</strong>.</p>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header">
+            <span>¿Cómo reporto contenido inapropiado?</span>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>Cada publicación cuenta con un botón de <strong>Reportar</strong>.</p>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header">
+            <span>¿La plataforma funciona sin internet?</span>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>No, pero puedes descargar itinerarios en PDF para usarlos sin conexión.</p>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header">
+            <span>¿Es gratis?</span>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>Sí, todas las funciones principales son gratuitas. Habrá funciones premium opcionales en el futuro.</p>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header">
+            <span>¿Puedo usar la plataforma en mi celular?</span>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>Sí, la plataforma es completamente responsive y funciona en cualquier dispositivo.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOPORTE -->
+      <section id="soporte" class="section">
+        <h2>9. Soporte Técnico y Ayuda</h2>
+        <p>Si necesitas ayuda, dispones de varios canales:</p>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📧</div>
+            <div class="feature-title">Email</div>
+            <p>soporte@exploracolombia.com</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <div class="feature-title">Chat en Línea</div>
+            <p>Lunes a viernes, 8:00 a.m. – 6:00 p.m.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📞</div>
+            <div class="feature-title">Teléfono</div>
+            <p>01-8000-EXPLORE</p>
+          </div>
+        </div>
+
+        <h3>👉 Ejemplo de Interacción</h3>
+        <div class="example-box">
+Usuario: "No puedo subir mis fotos."
+
+Soporte: "Por favor revisa que no superen los 5MB 
+y que estén en formato JPG o PNG."
+        </div>
+      </section>
+
+      <!-- TIPS -->
+      <section id="tips" class="section">
+        <h2>10. Tips y Recomendaciones</h2>
+
+        <div class="tip-box">
+          <strong>Mantén tu perfil actualizado</strong><br>
+          Recibirás sugerencias personalizadas basadas en tus intereses.
+        </div>
+
+        <div class="tip-box">
+          <strong>Usa filtros de accesibilidad</strong><br>
+          Si viajas con adultos mayores o niños, activa las opciones de accesibilidad.
+        </div>
+
+        <div class="tip-box">
+          <strong>Descarga rutas en PDF</strong><br>
+          Antes de viajar, descarga tus itinerarios por si no tienes internet.
+        </div>
+
+        <div class="tip-box">
+          <strong>Participa en la comunidad</strong><br>
+          Escribe reseñas: ayudan a otros viajeros a decidir mejor.
+        </div>
+
+        <div class="tip-box">
+          <strong>Activa notificaciones</strong><br>
+          Entérate de promociones y eventos turísticos en tiempo real.
+        </div>
+      </section>
+            <!-- SEGURIDAD -->
+      <section id="seguridad" class="section">
+        <h2>11. Seguridad y Buenas Prácticas</h2>
+
+        <div class="warning-box">
+          <strong>Protege tu cuenta:</strong>
+          <ul>
+            <li>🔐 No compartas tu contraseña con nadie</li>
+            <li>🔑 Usa una clave única que no utilices en otros servicios</li>
+            <li>🚨 Reporta cualquier actividad sospechosa en tu cuenta</li>
+          </ul>
+        </div>
+
+        <h3>Buenas Prácticas de la Comunidad</h3>
         <ul>
-          <li>Explorar lugares turísticos por categorías (cultural, ecológico, histórico, gastronómico).</li>
-          <li>Visualizar galerías de imágenes y reseñas.</li>
-          <li>Buscar destinos por nombre, región o tipo de experiencia.</li>
-          <li>Filtrar resultados por precio, accesibilidad o dificultad.</li>
-          <li>Descargar itinerarios en PDF.</li>
+          <li>📝 Publica contenido respetuoso hacia comunidades locales y el medio ambiente</li>
+          <li>🌱 Fomenta el turismo responsable y sostenible</li>
+          <li>📸 Respeta la privacidad de otras personas en tus fotos</li>
+          <li>♻️ Comparte tips sobre cómo cuidar los lugares que visitas</li>
         </ul>
-      </section>
 
-      <section id="publicar" class="card">
-        <h2>4. Publicar contenido</h2>
-        <ol>
-          <li>Ir a la sección <strong>Publicar</strong>.</li>
-          <li>Llenar el formulario con: título, descripción, ubicación, categoría y fotos.</li>
-          <li>Enviar la publicación para revisión.</li>
-        </ol>
-        <p>Una vez aprobada, tu experiencia será visible en la comunidad.</p>
-      </section>
+        <div class="example-box">
+✅ Buena práctica:
+"En mi visita al Parque Tayrona, llevé mis residuos de vuelta. 
+¡No dejes rastro en la naturaleza!"
 
-      <section id="listas" class="card">
-        <h2>5. Favoritos y rutas</h2>
-        <p>Guarda lugares como favoritos y crea listas personalizadas. Ejemplo: “Rutas de montaña” o “Tour gastronómico”.</p>
-        <p>Al combinar destinos, el sistema genera un itinerario sugerido con tiempos y distancias.</p>
-      </section>
+❌ Mala práctica:
+Publicar ubicaciones exactas de especies en peligro de extinción.
+        </div>
 
-      <section id="mapa" class="card">
-        <h2>6. Mapa interactivo</h2>
-        <p>El mapa muestra destinos en tiempo real:</p>
-        <ul>
-          <li>Filtrar por categorías: cultura, naturaleza, gastronomía.</li>
-          <li>Calcular distancias entre destinos.</li>
-          <li>Planear recorridos paso a paso.</li>
-        </ul>
+        <h3>📌 Última Actualización</h3>
+        <p><strong>Octubre 2025</strong> — Este manual y la plataforma se actualizan de forma continua.</p>
       </section>
-
-      <section id="perfil" class="card">
-        <h2>7. Perfil de usuario</h2>
-        <p>Desde tu perfil puedes:</p>
-        <ul>
-          <li>Actualizar tu foto y biografía.</li>
-          <li>Ver tus rutas y listas guardadas.</li>
-          <li>Editar publicaciones.</li>
-          <li>Consultar tus reseñas.</li>
-        </ul>
-      </section>
-
-      <section id="faq" class="card">
-        <h2>8. Preguntas frecuentes</h2>
-        <details><summary>¿Puedo editar mis publicaciones?</summary><p>Sí, desde tu perfil en la sección “Mis publicaciones”.</p></details>
-        <details><summary>¿Cómo reporto contenido incorrecto?</summary><p>En cada página de lugar hay un botón de <strong>Reportar</strong>.</p></details>
-        <details><summary>¿La app funciona sin internet?</summary><p>No, pero puedes descargar itinerarios en PDF para usarlos offline.</p></details>
-      </section>
-
-      <section id="soporte" class="card">
-        <h2>9. Soporte</h2>
-        <p>Si tienes problemas, comunícate:</p>
-        <ul>
-          <li>Email: <strong>soporte@exploracolombia.com</strong></li>
-          <li>Chat en línea dentro de la plataforma</li>
-          <li>Teléfono: 01-8000-EXPLORE</li>
-        </ul>
-      </section>
-
-      <section id="tips" class="card">
-        <h2>10. Tips y recomendaciones</h2>
-        <ul>
-          <li>Actualiza tu perfil para recibir recomendaciones personalizadas.</li>
-          <li>Usa la opción <em>Filtrar</em> para encontrar actividades accesibles.</li>
-          <li>Descarga rutas en PDF antes de viajar.</li>
-          <li>Comparte tus reseñas: ayudan a otros viajeros.</li>
-        </ul>
-      </section>
-
-      <footer>
-        Manual de Usuario — Explora Colombia | Actualizado: Octubre 2025
-      </footer>
     </main>
   </div>
 
+  <footer>
+    <p>🇨🇴 <strong>Explora Colombia</strong> — Conectando viajeros con destinos auténticos</p>
+    <p>© 2025 Explora Colombia. Todos los derechos reservados.</p>
+  </footer>
+
   <script>
-    const buttons=document.querySelectorAll("nav button");
-    const sections=document.querySelectorAll("main .card");
-    buttons.forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        buttons.forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        sections.forEach(sec=>{
-          sec.classList.remove("active");
-          if(sec.id===btn.dataset.tab) sec.classList.add("active");
-        });
+    // Navigation
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.section');
+    
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const targetSection = item.dataset.section;
+        
+        navItems.forEach(nav => nav.classList.remove('active'));
+        sections.forEach(sec => sec.classList.remove('active'));
+        
+        item.classList.add('active');
+        document.getElementById(targetSection).classList.add('active');
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
+    });
+
+    // Accordions
+    const accordions = document.querySelectorAll('.accordion');
+    accordions.forEach(accordion => {
+      const header = accordion.querySelector('.accordion-header');
+      header.addEventListener('click', () => {
+        accordion.classList.toggle('open');
+      });
+    });
+
+    // Progress Bar
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+
+    // Feature Cards Animation
+    const featureCards = document.querySelectorAll('.feature-card');
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    featureCards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'all 0.6s ease';
+      observer.observe(card);
     });
   </script>
 </body>
 </html>
-
